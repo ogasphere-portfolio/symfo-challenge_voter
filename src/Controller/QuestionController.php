@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Answer;
-use App\Entity\Question;
 use App\Entity\Tag;
 use App\Entity\User;
+use App\Entity\Answer;
+use App\Entity\Question;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
+use App\Repository\UserRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
-use App\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class QuestionController extends AbstractController
 {
@@ -136,7 +137,29 @@ class QuestionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/question/edit/{id}", name="question_edit", methods={"GET","POST"}, requirements={"id"="\d+"}))
+     * 
+     */
+    public function edit(Request $request, Question $question): Response
+    {
+        // On appelle le voter pour verifer l'accés
+        $this->denyAccessUnlessGranted('question_edit',$question);
 
+        $form = $this->createForm(QuestionType::class, $question);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            // todo demander comment on peut rediriger differrement selon l'utilisateur connecté
+            return $this->redirectToRoute('question_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('question/edit.html.twig', [
+            'question' => $question,
+            'form' => $form->createView(),
+        ]);
+    }
     /**
      * @Route("/admin/question/toggle/{id}", name="admin_question_toggle")
      */
