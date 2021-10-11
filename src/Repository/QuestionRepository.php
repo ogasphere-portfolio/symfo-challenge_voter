@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Question;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -26,6 +27,20 @@ class QuestionRepository extends ServiceEntityRepository
             ->andWhere('t = :tag')
             ->andWhere('q.isBlocked = false')
             ->setParameter('tag', $tag)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByOlderUpdateDate(int $nbDays = 7) :array
+    {
+        $updateDateLimit = new DateTime();
+        $modifier = '-' . $nbDays . ' days';
+        $updateDateLimit->modify($modifier);
+
+        return $this->createQueryBuilder('q')
+            
+            ->andWhere('q.updatedAt = :dateUpdate')
+            ->setParameter('dateUpdate', $updateDateLimit)
             ->getQuery()
             ->getResult();
     }

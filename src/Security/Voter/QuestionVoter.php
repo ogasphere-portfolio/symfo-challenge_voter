@@ -41,12 +41,7 @@ class QuestionVoter extends Voter
     {
         
         // ROLE_SUPER_ADMIN can do anything! The power!
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
-            return true;
-        }
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return true;
-        }
+      
         if ($this->security->isGranted('ROLE_MODERATOR')) {
             return true;
         }
@@ -95,7 +90,18 @@ class QuestionVoter extends Voter
 
     private function canEdit(Question $question, User $user): bool
     {
-        // this assumes that the Post object has a `getOwner()` method
-        return $user === $question->getUser();
+       
+        if ($this->security->isGranted('ROLE_MODERATOR') ) 
+        {
+            return true;
+        }
+
+        // si créateur de la question => oui
+        if ($question->getUser()->getId() === $user->getId()) 
+        {
+            return true;
+        }
+        // On verifie que la question n'est pas bloqué par l'administrateur
+        return !$question->getisBlocked();
     }
 }
