@@ -1,0 +1,21 @@
+<h1 id="faq-oclock">FAQ O'clock</h1>
+<p>Clairement Stackoverflow c'est pas si terrible :trollface: alors on s'est dit qu'il fallait réinventer la roue 😀</p>
+<p>Mais on n'a pas fini le projet… sinon ça serait trop facile.</p>
+<p>Voici donc un sacré projet, pas tout à fait terminé. Il a pour but de proposer un site où les utilisateurs peuvent poser des questions et d'autres utilisateurs y répondent. Comme pour Stackoverflow, celui qui a posé la question peut voter pour la meilleure réponse.</p>
+<p>Il y a d'autres fonctionnalités mises en place qu'on vous laisse découvrir.</p>
+<p><strong>Avant toutes choses vous devrez donc installer et apprivoiser ce projet.</strong></p>
+<blockquote>
+  <p>Installez les dépendances, configurez vos variables d'environnement, chargez les fixtures !</p>
+</blockquote>
+<h1 id="challenge">Challenge</h1>
+<p>On a vu qu'on pouvait attribuer des rôles à des utilisateurs. Grâce aux rôles, on peut définir des droits d'accès à certaines routes. On peut également, dans un contrôleur, n'autoriser l'accès que pour certains rôles. Mais que faire quand on souhaite autoriser l'accès à une route selon l'identité de l'utilisateur ? L'<code>access_control</code> ne le permet pas. Comment pourrait-on, par exemple, permettre aux utilisateurs d'éditer leurs questions mais pas celles des autres ?</p>
+<h1 id="les-voters-">Les voters !</h1>
+<p>Sur cette documentation, vous trouverez tout le nécessaire pour créer des voters : https://symfony.com/doc/current/security/voters.html</p>
+<p><strong>Votre objectif est de créer un voter qui autorise de modifier une question que si l'auteur de la question, un modérateur ou un administrateur tente de le faire.</strong></p>
+<p>Créer une méthode dans le contrôleur adéquat qui permet d'éditer une question, ajouter le voter et vérifier que l'utilisateur connecté à un droit d'édition sur cette question.</p>
+<h2 id="bonus">Bonus</h2>
+<ul>
+<li><strong>Voter</strong> : Modifier le code existant qui permet à un auteur de valider la bonne réponse à sa question. Actuellement c'est en dur dans le contrôleur, peut-on utiliser le voter créé précédemment ?</li>
+<li><strong>CSS</strong> : Si ça vous dit de mettre un bon coup de frais au design des formulaires, assurez-vous que les formulaires seront générés avec les classes de Bootstrap dans la config <code>yaml</code> de Twig !</li>
+</ul>
+<p>🎉</p>
